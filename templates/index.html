@@ -9,8 +9,28 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.4/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" href="static/styles.css">
+
+    {% block head %}{% endblock %}
 </head>
 <body>
+    
+
+    <!-- Loading mask and functionality -->
+    <script type="text/javascript">
+      window.onload=function() {
+        document.getElementById('loading-mask').style.display='none';
+      }
+    </script>
+
+    <div id="loading-mask">
+      <div class="ui active dimmer">
+        <div class="ui text loader">Loading</div>
+      </div>
+      <p></p>
+    </div>
+
     <div class="ui left inverted visible vertical menu sidebar thin">
         <a class="item" style="display: flex; justify-content: left; align-items: center;">
             <img src="static/logo.png" class="ui image" style="height: 28px; margin-right: 4px; margin-bottom: 5px;">
@@ -34,7 +54,26 @@
         </a>
     </div>
     <div class="pusher">
-      
+      {% block content %}{% endblock %}
+
+      <!-- Testing -->
+      <div class="ui raised basic segment center aligned">
+        <h1>Minuteman High School</h1>
+        <p><span class="ui large text">Welcome back, John Doe!</span></p>
+      </div>
+
+      <div class="ui basic horizontal segments">
+        <div class="ui segment">
+          <h2>Daily Announcements</h2>
+          <p>May 14, 2025</p>
+        </div>
+        <div class="ui segment">
+          <p></p>
+        </div>
+        <div class="ui segment">
+          <p></p>
+        </div>
+      </div>
     </div>
 </body>
 </html>

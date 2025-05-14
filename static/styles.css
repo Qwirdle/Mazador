@@ -1,0 +1,13 @@
+#loading-mask {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: white;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
