@@ -1,0 +1,37 @@
+{% extends 'base-landing.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="ui container center aligned" style="display: flex; align-items: center; justify-content: center; height: 100vh;">
+        <div style="display: flex; justify-content: center;">
+            <div class="ui segment raised padded" style="text-align: center;">
+                <h1>{{ SCHOOL_NAME }}</h1>
+
+                <br>
+
+                <!-- Use fomantic form validation!!! (https://fomantic-ui.com/behaviors/form.html#/usage) -->
+                <form class="ui form">
+                  <div class="field">
+                    <h3>Username</h3>
+                    <input type="text" name="username" placeholder="Username">
+                  </div>
+                  <div class="field">
+                    <h3>Password</h3>
+                    <input type="text" name="password" placeholder="Password">
+                  </div>
+                  <button class="ui button" type="submit"><h4>Login</h4></button>
+                </form>
+
+                <br><br><br>
+        
+                <!-- Center the logo and text horizontally inside -->
+                <div class="item" style="display: flex; justify-content: center; align-items: center;">
+                  <img src="static/logo.png" class="ui image" style="height: 26px; margin-right: 3px;">
+                  <div class="header"><h3>azador Education</h3></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+{% endblock %}
