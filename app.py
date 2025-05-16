@@ -22,7 +22,7 @@ def login():
     return render_template('login.html', SCHOOL_NAME = SCHOOL_NAME)
 
 @app.route('/home/')
-@login_required
+# @login_required Disabled for UI work
 def home():
     return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME)
 

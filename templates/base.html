@@ -16,7 +16,14 @@
 
     {% block head %}{% endblock %}
 </head>
-<body>
+<body style="
+      background-image: url('../static/placeholder-background.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      margin: 0;
+    ">
     
 
     <!-- Loading mask and functionality -->
@@ -33,9 +40,9 @@
       <p></p>
     </div>
 
-    <div class="ui left inverted visible vertical menu sidebar thin">
+    <div class="ui left inverted visible vertical menu sidebar thin fixed">
         <a class="item" style="display: flex; justify-content: left; align-items: center;">
-            <img src="static/logo.png" class="ui image" style="height: 28px; margin-right: 4px; margin-bottom: 5px;">
+            <img src="../static/logo.jpg" class="ui image" style="height: 28px; margin-right: 4px; margin-bottom: 5px;">
             <div class="header"><h2 style="color: white;">azador </h2></div>
         </a>
         <a class="item">

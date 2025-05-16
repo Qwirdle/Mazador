@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 #loading-mask {
     display: flex;
     justify-content: center;
