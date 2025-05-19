@@ -57,23 +57,10 @@ from src.models  import User
 def login():
     # Check for POST request and do login
     if request.method == "POST":
-        # No tripper because of structure of flashes
-
-        if len(request.form.get("username")) == 0:
-            flash("You need to have a username", 'error')
-            return redirect(url_for('login'))
-
-        # Check if username exists before password to avoid looking up
-        # Non-existant username in db
         usernameExists = User.query.filter_by(username=request.form.get("username")).first()
-        print(usernameExists)
         if usernameExists == None:
             flash("Invalid username/password", 'error')
             return redirect(url_for('login'))
-
-        if len(request.form.get("password")) == 0:
-            flash("You need to have a password", 'error')
-            return redirect(url_for("login"))
 
 
         user = User.query.filter_by(username=request.form.get("username")).first()
