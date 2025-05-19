@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_login import UserMixin
 
 db = SQLAlchemy()
 
@@ -14,10 +15,10 @@ class File(db.Model):
     classes = db.relationship('Class', backref='file', lazy=True)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    file_id = db.Column(db.Integer)
+    file_id = db.Column(db.Integer, db.ForeignKey('files.file_id'))
     username = db.Column(db.String)
     password = db.Column(db.String)
     role = db.Column(db.String)
@@ -92,5 +93,5 @@ class_enrollment = db.Table(
 class_faculty = db.Table(
     'class_faculty',
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('faculty_id', db.Integer, primary_key=True)  # Not a real FK, just as per DBML
+    db.Column('class_id', db.Integer, db.ForeignKey('classes.class_id'), primary_key=True)  # ✅ fixed FK
 )

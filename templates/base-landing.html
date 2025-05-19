@@ -16,7 +16,7 @@
 
     {% block head %}{% endblock %}
 </head>
-<body>
+<body style="overflow-y: hidden;">
     <!-- Loading mask and functionality -->
     <script type="text/javascript">
         window.onload=function() {
@@ -30,6 +30,24 @@
         </div>
         <p></p>
       </div>
+
+    <!-- Flashing (ayo) -->
+
+    <div style="position: relative;">
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            
+          <div class="ui overlay nag red raised" style="display: block;">
+              <h4 class="ui big text" style="color: #fff;">{{ message }}</h4>
+          </div>
+            
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+    </div>
 
     {% block content %}{% endblock %}
 </body>

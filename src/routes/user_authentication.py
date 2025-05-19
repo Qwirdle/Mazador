@@ -5,51 +5,55 @@ from flask_sqlalchemy import *
 from flask_login import *
 from flask_wtf import *
 
-from __main__ import app, db, User
+from src.config import *
 
-@app.route('/register/', methods=["GET", "POST"])
-def register():
-    # If POST request, make new user
-    if request.method == "POST":
-        # Variable to detect if something went wrong, so multiple flashes can show up
-        tripper = False
+from __main__ import app, db
+from src.models  import User
 
-        # Check if there is username/password
-        if len(request.form.get("username")) == 0:
-            flash("You need to have a username", 'error')
-            tripper = True
-        if len(request.form.get("password")) == 0:
-            flash("You need to have a password", 'error')
-            tripper = True
-        
-        # Check tripper
-        if tripper == True:
-            return redirect(url_for("register"))
-        
-        # Check for existing username
-        usernameExists = User.query.filter_by(username=request.form.get("username")).first()
-        if usernameExists:
-            flash("Username already exists", 'error')
-            return redirect(url_for('register'))
-
-
-        # Check password repeat
-        if request.form.get("password") == request.form.get("rpassword"):
-            user = User(username=request.form.get("username"), password=request.form.get("password"), role=request.form.get("role"))
-
-            # Implement into db
-            db.session.add(user)
-            db.session.commit()
-
-            return redirect(url_for("login"))
-        else:
-            flash("Passwords don't match", 'error')
-            return redirect(url_for('register'))
-
-    return render_template('/login/register.html')
+# COMMENTED OUT TILL FUNCTIONALITY IMPLEMENTED
+# @app.route('/register/', methods=["GET", "POST"])
+# def register():
+#    # If POST request, make new user
+#    if request.method == "POST":
+#        # Variable to detect if something went wrong, so multiple flashes can show up
+#        tripper = False
+#
+#        # Check if there is username/password
+#        if len(request.form.get("username")) == 0:
+#            flash("You need to have a username", 'error')
+#            tripper = True
+#        if len(request.form.get("password")) == 0:
+#            flash("You need to have a password", 'error')
+#            tripper = True
+#        
+#        # Check tripper
+#        if tripper == True:
+#            return redirect(url_for("register"))
+#        
+#        # Check for existing username
+#        usernameExists = User.query.filter_by(username=request.form.get("username")).first()
+#        if usernameExists:
+#            flash("Username already exists", 'error')
+#            return redirect(url_for('register'))
+#
+#
+#        # Check password repeat
+#        if request.form.get("password") == request.form.get("rpassword"):
+#            user = User(username=request.form.get("username"), password=request.form.get("password"), role=request.form.get("role"))
+#
+#            # Implement into db
+#            db.session.add(user)
+#            db.session.commit()
+#
+#            return redirect(url_for("login"))
+#        else:
+#            flash("Passwords don't match", 'error')
+#            return redirect(url_for('register'))
+#
+#    return render_template('/login/register.html')
 
 # MAYBE: Implement brute force security
-@app.route('/login/', methods=["GET", "POST"])
+@app.route('/', methods=["GET", "POST"])
 def login():
     # Check for POST request and do login
     if request.method == "POST":
@@ -81,4 +85,4 @@ def login():
             flash("Invalid username/password", 'error')
             return redirect(url_for('login'))
 
-    return render_template('/login/login.html')
+    return render_template('/login.html', SCHOOL_NAME = SCHOOL_NAME)
