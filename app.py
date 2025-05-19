@@ -26,5 +26,10 @@ def login():
 def home():
     return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME)
 
+# Todo: Move to and create error.py routes file
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error/404.html'), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
