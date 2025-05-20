@@ -59,7 +59,7 @@ def login():
     if request.method == "POST":
         
         # Handle the first login, create new account and label it as an adminestrator
-        if not db.session.query(User.id).first():
+        if not db.session.query(User.id).filter_by(role='admin').first():
             user = User(username=request.form.get("username"), password=request.form.get("password"), role="admin") # Create admin user
             db.session.add(user)
             db.session.commit()

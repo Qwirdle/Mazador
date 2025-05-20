@@ -21,6 +21,8 @@ class User(db.Model, UserMixin):
     file_id = db.Column(db.Integer, db.ForeignKey('files.file_id'))
     username = db.Column(db.String)
     password = db.Column(db.String)
+    fname = db.Column(db.String, default=None)
+    lname = db.Column(db.String, default=None)
     role = db.Column(db.String)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
