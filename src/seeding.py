@@ -40,8 +40,23 @@ class Seeder:
             "Watson", "Brooks", "Chavez", "Wood", "James", "Bennett", "Gray", "Mendoza", "Ruiz", "Hughes",
             "Price", "Alvarez", "Castillo", "Sanders", "Patel", "Myers", "Long", "Ross", "Foster", "Jimenez"
         ]
+        self.classNames = [
+    "English I", "English II", "English III", "English IV", "Honors English I", "Honors English II", "Honors English III", "AP English Language", "AP English Literature", "Creative Writing",
+    "Algebra I", "Geometry", "Algebra II", "Pre-Calculus", "Calculus", "Honors Algebra II", "Statistics", "AP Calculus AB", "AP Calculus BC", "AP Statistics",
+    "Biology", "Honors Biology", "Chemistry", "Honors Chemistry", "Physics", "Earth Science", "Environmental Science", "Anatomy and Physiology", "AP Biology", "AP Chemistry",
+    "World History", "U.S. History", "Civics", "Economics", "Geography", "AP U.S. History", "AP World History", "AP Government", "Psychology", "AP Psychology",
+    "Spanish I", "Spanish II", "French I", "French II", "German I", "German II", "Latin I", "Latin II", "AP Spanish Language", "ASL I",
+    "Art I", "Art II", "Digital Art", "Graphic Design", "Photography", "Theater Arts", "Drama", "Band", "Choir", "Music Theory",
+    "Physical Education", "Health", "Weight Training", "Team Sports", "Dance", "Yoga and Fitness", "Driver's Education", "Sports Medicine", "Recreational Sports", "Intro to Kinesiology",
+    "Intro to Computer Science", "Web Design", "Game Development", "Python Programming", "AP Computer Science Principles", "AP Computer Science A", "Robotics", "Digital Media", "Cybersecurity Basics", "IT Fundamentals",
+    "Business Math", "Accounting", "Entrepreneurship", "Marketing", "Personal Finance", "Career Prep", "Speech and Debate", "Yearbook", "Journalism", "Student Leadership"]
+
 
     def getStudent(self):
         cred = generateCredentials(1)
         return User(username=cred[0][0], password=cred[0][1], fname=choice(self.fNames), lname=choice(self.lNames), role="student")
+    
+    def getFaculty(self):
+        cred = generateCredentials(1)
+        return User(username=cred[0][0], password=cred[0][1], fname=choice(self.fNames), lname=choice(self.lNames), role="faculty")
     

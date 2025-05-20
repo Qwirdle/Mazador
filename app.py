@@ -21,21 +21,22 @@ with app.app_context():
     db.create_all()
 
 # Seeder function
-def seedUsers(count=100, onlyOnEmpty=True):
+def seedStudents(count=100):
     with app.app_context():
-        if onlyOnEmpty:
-            if not db.session.query(User.id).first():
-                for i in range(count):
-                    db.session.add(seed.getStudent())
+        for i in range(count):
+            db.session.add(seed.getStudent())
+        
+        db.session.commit()
+        print(Style.BRIGHT + Fore.BLUE + f" * Seeded {count} students")
 
-                db.session.commit()
-                print(Fore.BLUE + f" * Seeded {count} users")
-        else:
-            for i in range(count):
-                db.session.add(seed.getStudent())
-            
-            db.session.commit()
-            print(Fore.BLUE + f" * Seeded {count} users")
+# Seeder function
+def seedFaculty(count=10):
+    with app.app_context():
+        for i in range(count):
+            db.session.add(seed.getFaculty())
+        
+        db.session.commit()
+        print(Style.BRIGHT + Fore.BLUE + f" * Seeded {count} faculty")
 
 # Will fix when inconvenience is encountered <3
 login_manager = LoginManager()
@@ -58,7 +59,7 @@ from src.routes.user_authentication import login
 @login_required
 def home():
     user = User.query.filter_by(username=current_user.username).first()
-    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username)
+    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FNAME = user.fname, LNAME = user.lname)
 
 # Todo: Move to and create error.py routes file
 @app.errorhandler(404)
@@ -75,5 +76,9 @@ def unauthorized_callback():
     return redirect(url_for('login'))
 
 if __name__ == '__main__':
-    seedUsers()
+    with app.app_context():
+        if not db.session.query(User.id).first(): # Only seed if unseeded
+            seedStudents(2000)
+            seedFaculty(150)
+
     app.run(debug=True)

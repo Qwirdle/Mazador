@@ -68,7 +68,7 @@ def login():
             user = User.query.filter_by(username=request.form.get("username")).first()
             login_user(user)
 
-            return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FIRST_ADMIN_LOGON = True)
+            return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FIRST_ADMIN_LOGON = True, FNAME = user.fname, LNAME = user.lname)
         
         else:
             usernameExists = User.query.filter_by(username=request.form.get("username")).first()

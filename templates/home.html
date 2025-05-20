@@ -17,7 +17,7 @@
       
       <div class="ui segment raised center aligned">
         <h2>{{ SCHOOL_NAME }}</h2>
-        <h3>Welcome back, {{ USERNAME }}</h3>
+        <h3>Welcome back, {{ FNAME }} {{ LNAME }}</h3>
       </div>
 
       <div class="ui segment raised bottom attached">
@@ -47,41 +47,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="left aligned">A</td>
-              <td class="left aligned">Math 101</td>
-              <td class="left aligned">Mr. Johnson</td>
-              <td class="right aligned">2</td>
-              <td class="right aligned">A-</td>
-            </tr>
-            <tr>
-              <td class="left aligned">B</td>
-              <td class="left aligned">English Literature</td>
-              <td class="left aligned">Ms. Rivera</td>
-              <td class="right aligned">0</td>
-              <td class="right aligned">B+</td>
-            </tr>
-            <tr>
-              <td class="left aligned">C</td>
-              <td class="left aligned">Physics</td>
-              <td class="left aligned">Dr. Smith</td>
-              <td class="right aligned">1</td>
-              <td class="right aligned">A</td>
-            </tr>
-            <tr>
-              <td class="left aligned">D</td>
-              <td class="left aligned">World History</td>
-              <td class="left aligned">Mr. Lee</td>
-              <td class="right aligned">3</td>
-              <td class="right aligned">B</td>
-            </tr>
-            <tr>
-              <td class="left aligned">E</td>
-              <td class="left aligned">Computer Science</td>
-              <td class="left aligned">Ms. Zhang</td>
-              <td class="right aligned">0</td>
-              <td class="right aligned">A+</td>
-            </tr>
+            {% for CLASS in GRADEBOOK %}
+              <tr>
+                <td class="left aligned">{{ CLASS.PERIOD }}</td>
+                <td class="left aligned">{{ CLASS.NAME }}</td>
+                <td class="left aligned">{{ CLASS.TEACHER_NAME }}</td>
+                <td class="right aligned">{{ CLASS.ABSENCES }}</td>
+                <td class="right aligned">{{ CLASS.GRADE }}</td>
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
@@ -99,41 +73,15 @@
             </tr>
           </thead>
           <tbody>
+            {% for ASSIGNMENT in ASSIGNMENTS %}
             <tr>
-              <td class="left aligned">May 17</td>
-              <td class="left aligned">Math 101</td>
-              <td class="left aligned">Algebra Worksheet</td>
-              <td class="left aligned">Mr. Johnson</td>
-              <td class="right aligned">Not Started</td>
+              <td class="left aligned">{{ ASSIGNMENT.DUE_DATE }}</td>
+              <td class="left aligned">{{ ASSIGNMENT.CLASS_NAME }}</td>
+              <td class="left aligned">{{ ASSIGNMENT.ASSIGNMENT_NAME }}</td>
+              <td class="left aligned">{{ ASSIGNMENT.TEACHER_NAME }}</td>
+              <td class="right aligned">{{ ASSIGNMENT.COMPLETION }}</td>
             </tr>
-            <tr>
-              <td class="left aligned">May 18</td>
-              <td class="left aligned">English Literature</td>
-              <td class="left aligned">Poetry Analysis</td>
-              <td class="left aligned">Ms. Rivera</td>
-              <td class="right aligned">In Progress</td>
-            </tr>
-            <tr>
-              <td class="left aligned">May 19</td>
-              <td class="left aligned">Physics</td>
-              <td class="left aligned">Lab Report: Motion</td>
-              <td class="left aligned">Dr. Smith</td>
-              <td class="right aligned">Not Started</td>
-            </tr>
-            <tr>
-              <td class="left aligned">May 20</td>
-              <td class="left aligned">World History</td>
-              <td class="left aligned">Essay on Ancient Rome</td>
-              <td class="left aligned">Mr. Lee</td>
-              <td class="right aligned">Completed</td>
-            </tr>
-            <tr>
-              <td class="left aligned">May 21</td>
-              <td class="left aligned">Computer Science</td>
-              <td class="left aligned">Java Project Part 1</td>
-              <td class="left aligned">Ms. Zhang</td>
-              <td class="right aligned">In Progress</td>
-            </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
