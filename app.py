@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, url_for
 from flask_login import *
 from src.models import db, User
 from src.config import *
@@ -15,16 +15,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-    user1 = User(
-        username='test',
-        password='test',
-        role='student',
-        created_at=datetime.utcnow()
-    )
-
-    db.session.add(user1)
-    db.session.commit()
-
 # Will fix when inconvenience is encountered <3
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -32,6 +22,11 @@ login_manager.init_app(app)
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.route('/logout/')
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
 
 # Import routes
 from src.routes.user_authentication import login
@@ -51,6 +46,11 @@ def __error_404(e):
 @app.route('/page-not-found')
 def pageNotFound():
     return render_template('error/404.html')
+
+# Redirect to index when accessing part of site without proper unauthorization
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)

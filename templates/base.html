@@ -33,6 +33,29 @@
       <p></p>
     </div>
 
+    {% if FIRST_ADMIN_LOGON %}
+    <!-- Trigger Script (auto shows modal on page load) -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#centered-modal')
+          .modal({
+            closable: true
+          })
+          .modal('show');
+      });
+    </script>
+
+    <!-- Modal HTML -->
+    <div class="ui modal" id="centered-modal">
+      <i class="close icon"></i> <!-- "X" close icon -->
+      <div class="header">Welcome, Admin</div>
+      <div class="content">
+        <p>This is your first time logging in. Please review your settings.</p>
+      </div>
+    </div>
+    {% endif %}
+
+
     <div class="ui left inverted visible vertical menu sidebar thin fixed overlay">
         <a class="item" style="display: flex; justify-content: left; align-items: center;" href="{{ url_for('home') }}">
             <img src="../static/logo.jpg" class="ui image" style="height: 28px; margin-right: 4px; margin-bottom: 5px;">
@@ -51,7 +74,7 @@
           Assignments
         </a>
 
-        <a class="item" style="margin-top: auto;"">
+        <a class="item" style="margin-top: auto;" href="{{ url_for('logout') }}">
             Logout
         </a>
     </div>

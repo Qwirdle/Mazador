@@ -57,19 +57,33 @@ from src.models  import User
 def login():
     # Check for POST request and do login
     if request.method == "POST":
-        usernameExists = User.query.filter_by(username=request.form.get("username")).first()
-        if usernameExists == None:
-            flash("Invalid username/password", 'error')
-            return redirect(url_for('login'))
-
-
-        user = User.query.filter_by(username=request.form.get("username")).first()
-        # Check for / validate password
-        if user.password == request.form.get("password"):
+        
+        # Handle the first login, create new account and label it as an adminestrator
+        if not db.session.query(User.id).first():
+            user = User(username=request.form.get("username"), password=request.form.get("password"), role="admin") # Create admin user
+            db.session.add(user)
+            db.session.commit()
+            
+            # Continue with login as usual
+            user = User.query.filter_by(username=request.form.get("username")).first()
             login_user(user)
-            return redirect(url_for("home"))
+
+            return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FIRST_ADMIN_LOGON = True)
+        
         else:
-            flash("Invalid username/password", 'error')
-            return redirect(url_for('login'))
+            usernameExists = User.query.filter_by(username=request.form.get("username")).first()
+            if usernameExists == None:
+                flash("Invalid username/password", 'error')
+                return redirect(url_for('login'))
+
+
+            user = User.query.filter_by(username=request.form.get("username")).first()
+            # Check for / validate password
+            if user.password == request.form.get("password"):
+                login_user(user)
+                return redirect(url_for("home"))
+            else:
+                flash("Invalid username/password", 'error')
+                return redirect(url_for('login'))
 
     return render_template('/login.html', SCHOOL_NAME = SCHOOL_NAME)
