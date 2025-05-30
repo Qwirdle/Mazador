@@ -7,8 +7,9 @@ from flask_wtf import *
 
 from src.config import *
 
-from __main__ import app, db
-from src.models  import User
+from __main__ import app, db, root
+from src.models import User
+from src.util import loadMarkdownAsHTML
 
 # COMMENTED OUT TILL FUNCTIONALITY IMPLEMENTED
 # @app.route('/register/', methods=["GET", "POST"])
@@ -68,7 +69,7 @@ def login():
             user = User.query.filter_by(username=request.form.get("username")).first()
             login_user(user)
 
-            return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FIRST_ADMIN_LOGON = True, FNAME = user.fname, LNAME = user.lname)
+            return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FIRST_ADMIN_LOGON = True, FNAME = user.fname, LNAME = user.lname, ANNOUNCEMENTS = loadMarkdownAsHTML(root + "/data/__announcements.md"))
         
         else:
             usernameExists = User.query.filter_by(username=request.form.get("username")).first()

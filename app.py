@@ -2,9 +2,13 @@ from flask import Flask, render_template, redirect, request, url_for
 from flask_login import *
 from src.models import db, User
 from src.config import *
+from src.util import loadMarkdownAsHTML
 from datetime import *
 from src.seeding import Seeder
 from colorama import init, Fore, Style # For custom console output formatting
+import os
+
+root = os.path.abspath(os.getcwd())
 
 init(autoreset=True)
 
@@ -12,7 +16,7 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///school.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'super-secret-key-change-this'
+app.secret_key = 'super-secret-key-change-this' # Change this Jasper, for the love of God
 
 db.init_app(app)
 seed = Seeder()
@@ -59,7 +63,7 @@ from src.routes.user_authentication import login
 @login_required
 def home():
     user = User.query.filter_by(username=current_user.username).first()
-    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FNAME = user.fname, LNAME = user.lname)
+    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FNAME = user.fname, LNAME = user.lname, ANNOUNCEMENTS = loadMarkdownAsHTML(root + "/data/__announcements.md"))
 
 # Todo: Move to and create error.py routes file
 @app.errorhandler(404)
