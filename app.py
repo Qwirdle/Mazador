@@ -1,12 +1,12 @@
 from flask import Flask, render_template, redirect, request, url_for
 from flask_login import *
-from src.models import db, User
+from src.models import db, User, Class
 from src.config import *
 from src.util import loadMarkdownAsHTML
 from datetime import *
 from src.seeding import Seeder
 from colorama import init, Fore, Style # For custom console output formatting
-import os
+import os, random
 
 root = os.path.abspath(os.getcwd())
 
@@ -24,7 +24,7 @@ seed = Seeder()
 with app.app_context():
     db.create_all()
 
-# Seeder function
+# Seeder functions
 def seedStudents(count=100):
     with app.app_context():
         for i in range(count):
@@ -33,7 +33,6 @@ def seedStudents(count=100):
         db.session.commit()
         print(Style.BRIGHT + Fore.BLUE + f" * Seeded {count} students")
 
-# Seeder function
 def seedFaculty(count=10):
     with app.app_context():
         for i in range(count):
@@ -41,6 +40,45 @@ def seedFaculty(count=10):
         
         db.session.commit()
         print(Style.BRIGHT + Fore.BLUE + f" * Seeded {count} faculty")
+
+def seedClasses(count=40):
+    with app.app_context():
+        for i in range(count):
+            db.session.add(seed.getClass())
+        
+        db.session.commit()
+        print(Style.BRIGHT + Fore.BLUE + f" * Seeded {count} classes")
+
+def enrollStudents(classCount=7):
+    students = User.query.filter_by(role='student').all()
+    classes = Class.query.all()
+
+    for student in students:
+        chosenClasses = random.sample(classes, min(classCount, len(classes)))
+
+        for x in chosenClasses:
+            if x not in student.enrolled_classes:
+                student.enrolled_classes.append(x)
+
+    db.session.commit()
+    print(Style.BRIGHT + Fore.BLUE + f" * Enrolled {len(students)} students into {classCount} classes each")
+
+def enrollFaculty(classCount=3):
+    faculty = User.query.filter_by(role='faculty').all()
+    classes = Class.query.all()
+
+    for person in faculty:
+        chosenClasses = random.sample(classes, min(classCount, len(classes)))
+
+        for x in chosenClasses:
+            if x not in person.teaching_classes:
+                person.teaching_classes.append(x)
+
+    db.session.commit()
+    print(Style.BRIGHT + Fore.BLUE + f" * Added {len(faculty)} faculty into {classCount} classes each")
+
+
+
 
 # Will fix when inconvenience is encountered <3
 login_manager = LoginManager()
@@ -84,5 +122,8 @@ if __name__ == '__main__':
         if not db.session.query(User.id).first(): # Only seed if unseeded
             seedStudents(2000)
             seedFaculty(150)
+            seedClasses(225)
+            enrollStudents()
+            enrollFaculty()
 
     app.run(debug=True)

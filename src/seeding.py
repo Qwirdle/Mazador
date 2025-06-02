@@ -1,4 +1,4 @@
-from src.models import db, User
+from src.models import db, User, Class
 import uuid
 from random import choice
 
@@ -59,4 +59,8 @@ class Seeder:
     def getFaculty(self):
         cred = generateCredentials(1)
         return User(username=cred[0][0], password=cred[0][1], fname=choice(self.fNames), lname=choice(self.lNames), role="faculty")
+    
+    def getClass(self):
+        cred = generateCredentials(1)
+        return Class(name=choice(self.classNames))
     
