@@ -67,15 +67,24 @@ def enrollFaculty(classCount=3):
     faculty = User.query.filter_by(role='faculty').all()
     classes = Class.query.all()
 
-    for person in faculty:
-        chosenClasses = random.sample(classes, min(classCount, len(classes)))
+    # Ensure every class has at least one teacher
+    for cls in classes:
+        if not cls.faculty:
+            randomFaculty = random.choice(faculty)
+            cls.faculty.append(randomFaculty)
 
-        for x in chosenClasses:
-            if x not in person.teaching_classes:
-                person.teaching_classes.append(x)
+    # Add more classes to each faculty (up to classCount)
+    for person in faculty:
+        currentClasses = set(person.teaching_classes)
+        availableClasses = [cls for cls in classes if cls not in currentClasses]
+        numNeeded = classCount - len(currentClasses)
+
+        if numNeeded > 0:
+            chosen = random.sample(availableClasses, min(numNeeded, len(availableClasses)))
+            person.teaching_classes.extend(chosen)
 
     db.session.commit()
-    print(Style.BRIGHT + Fore.BLUE + f" * Added {len(faculty)} faculty into {classCount} classes each")
+    print(Style.BRIGHT + Fore.BLUE + f" * Ensured all classes have at least one faculty and assigned up to {classCount} classes per faculty.")
 
 
 
@@ -89,6 +98,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 @app.route('/logout/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for("login"))
@@ -101,7 +111,26 @@ from src.routes.user_authentication import login
 @login_required
 def home():
     user = User.query.filter_by(username=current_user.username).first()
-    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FNAME = user.fname, LNAME = user.lname, ANNOUNCEMENTS = loadMarkdownAsHTML(root + "/data/__announcements.md"))
+
+    # Gather class/grade info through querying the db
+    gradebook = []
+    userClassesInfo = user.enrolled_classes
+
+    for x in userClassesInfo:
+
+        teachers = ""
+        for teacher in x.faculty:
+            teachers += teacher.fname + " " + teacher.lname + ", "
+
+        gradebook.append({
+            "PERIOD": None,
+            "NAME": x.name,
+            "TEACHER_NAME": teachers[:-2], # cut off last ','
+            "ABSENCES": None,
+            "GRADE": None
+        })
+
+    return render_template('home.html', SCHOOL_NAME = SCHOOL_NAME, USERNAME = user.username, FNAME = user.fname, LNAME = user.lname, ANNOUNCEMENTS = loadMarkdownAsHTML(root + "/data/__announcements.md"), GRADEBOOK = gradebook)
 
 # Todo: Move to and create error.py routes file
 @app.errorhandler(404)

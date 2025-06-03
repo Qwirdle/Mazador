@@ -32,7 +32,6 @@
         <table class="ui selectable table single line fixed unstackable">
           <thead>
             <tr>
-              <th class="left aligned">Block</th>
               <th class="left aligned">Class</th>
               <th class="left aligned">Teachers</th>
               <th class="right aligned">Number of Absences</th>
@@ -42,7 +41,6 @@
           <tbody>
             {% for CLASS in GRADEBOOK %}
               <tr>
-                <td class="left aligned">{{ CLASS.PERIOD }}</td>
                 <td class="left aligned">{{ CLASS.NAME }}</td>
                 <td class="left aligned">{{ CLASS.TEACHER_NAME }}</td>
                 <td class="right aligned">{{ CLASS.ABSENCES }}</td>
